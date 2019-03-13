@@ -1,8 +1,9 @@
 {
   "name": "fontendcomponent",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "dependencies": {
+    "js-export-excel": "^1.1.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8"
@@ -21,5 +22,12 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "keywords": [
+    "JS Excel 分页导出"
+  ],
+  "description": "excel export",
+  "main": "./src/index.js",
+  "author": "laynehuang <hl_mark@163.com>",
+  "license": "MIT"
 }
