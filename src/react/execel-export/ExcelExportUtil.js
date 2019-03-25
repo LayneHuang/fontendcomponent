@@ -102,6 +102,7 @@ export default class ExcelExportUtil {
      *
      * @param reqFunc           请求函数,格式  [ reqFuc(args,onSuccess, onFailure) ]
      *                                          onSuccess为成功回调
+     *                                         【回调函数参数中必须包含 （pageAmount | totalAmount or totalCount）字段描述结果集数量】
      *                                          onFailure为失败回调
      *
      *
@@ -140,14 +141,15 @@ export default class ExcelExportUtil {
             // console.log(res);
             // set Total count
             if (!StringUtils.isEmpty(res.pageAmount)) {
-                totalCount = res.pageAmount * pageSize;
                 totalPage = res.pageAmount;
+                totalCount = res.pageAmount * pageSize;
             }
             if (!StringUtils.isEmpty(res.totalAmount)) {
                 totalCount = res.totalAmount;
             }
             if (!StringUtils.isEmpty(res.totalCount)) {
                 totalCount = res.totalCount;
+                totalPage = totalCount / pageSize + (totalCount % pageSize === 0 ? 0 : 1);
             }
 
             let data = [];
