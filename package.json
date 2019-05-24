@@ -1,10 +1,11 @@
 {
   "name": "fontendcomponent",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "private": false,
   "homepage": "https://github.com/LayneHuang/fontendcomponent",
   "email": "hl_mark@163.com",
   "dependencies": {
+    "antd": "^3.18.2",
     "js-export-excel": "^1.1.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -26,7 +27,9 @@
     "not op_mini all"
   ],
   "keywords": [
-    "JS Excel 分页导出"
+    "Date Utils",
+    "String Utils",
+    "JS Excel Paging Export"
   ],
   "description": "excel export",
   "main": "./src/index.js",
