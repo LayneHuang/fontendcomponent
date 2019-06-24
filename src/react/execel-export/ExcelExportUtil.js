@@ -48,6 +48,8 @@ export default class ExcelExportUtil {
         onPercentChange,
         onFinish
     ) {
+        // 调用前先stop掉旧的timer
+        this.stopTimer();
         let percent = 0;
         // console.log(filterList);
         // console.log(filterMap);
@@ -128,6 +130,8 @@ export default class ExcelExportUtil {
         onPercentChange,
         onFinish
     ) {
+        // 调用前先stop掉旧的timer
+        this.stopTimer();
         let percent = 0;
         let totalCount = Number.MAX_VALUE;
         let totalPage = Number.MAX_VALUE;

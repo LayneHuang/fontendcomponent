@@ -4,6 +4,10 @@ export default class StringUtils {
         return s === null || s === undefined || s.length === 0;
     }
 
+    static isNotEmpty(s) {
+        return !StringUtils.isEmpty(s);
+    }
+
     static checkPhoneValidate(phone) {
         return !StringUtils.isEmpty(phone) && phone.length === 11 && phone[0] === '1';
     }
