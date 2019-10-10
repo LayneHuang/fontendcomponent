@@ -3,7 +3,8 @@ import StringUtils from '../utils/StringUtils';
 
 /**
  * @Author: laynehuang
- * @CreatedAt: 3/7/19
+ * @CreatedAt: 3/7/2019
+ * @ModifiedAt 6/5/2019
  */
 export default class ExcelExportUtil {
 
@@ -20,7 +21,62 @@ export default class ExcelExportUtil {
     }
 
     /**
-     * 单次导出
+     * 直接给出数据单次导出
+     * @param dataList          导出的数据,二维数组 , [[Sheet1_Data],[Sheet2Data]]
+     * @param exportFileName    导出文件名, 如  AA店-订单统计
+     * @param sheetNameList     导出Excel文件中的表单(Sheet)的名称列表， [Sheet1_Name,Sheet2_Name] 如['订单汇总信息','订单明细', ....]
+     * @param filterList        导出行对应的字段名列表, 如 ['key', 'orderNumber' , ... ]
+     * @param filterMap         相应字段名对应的列名显示(一个Map用于所有表单), 如 map[ ('key','序号'), ('orderNumber','订单编号'), ...]
+     * @param onPercentChange   导出百分比变化回调函数，返回 -1 表示导出失败
+     * @param onFinish          完成回调函数
+     */
+    exportStart(
+        dataList,
+        exportFileName,
+        sheetNameList,
+        filterList,
+        filterMap,
+        onPercentChange,
+        onFinish
+    ) {
+        let percent = 0;
+
+        // 调用前先stop掉旧的timer
+        this.stopTimer();
+
+        this.reqTimer = setInterval(() => {
+            percent++;
+            onPercentChange(percent);
+            if (percent === 100) {
+                this.stopTimer();
+            }
+        }, 1000);
+
+        let option = {};
+        option.datas = [];
+        dataList.forEach((list, index) => {
+            list.forEach((item, index) => {
+                item.key = index + 1;
+            });
+
+            option.datas.push({
+                sheetData: list,
+                sheetName: sheetNameList[index],
+                sheetFilter: filterList[index],
+                sheetHeader: ExcelExportUtil.getHeaderByFilter(filterList[index], filterMap),
+            });
+        });
+
+        option.fileName = exportFileName;
+        let toExcel = new ExportJsonExcel(option);
+        toExcel.saveExcel();
+        onPercentChange(100);
+        onFinish();
+    }
+
+
+    /**
+     * 通过网络查询单次导出
      * @param args              请求参数
      * @param reqFunc           请求函数,格式  [ reqFuc(args,onSuccess, onFailure) ]
      *                                          onSuccess为成功回调
@@ -37,7 +93,7 @@ export default class ExcelExportUtil {
      * @param onPercentChange   导出百分比变化回调函数，返回 -1 表示导出失败
      * @param onFinish          完成回调函数
      */
-    exportStart(
+    exportQueryStart(
         args,
         reqFunc,
         transformFuncList,
@@ -98,7 +154,7 @@ export default class ExcelExportUtil {
     }
 
     /**
-     * 分页导出的,开始导出函数
+     * 通过网络查询分页导出的,开始导出函数
      * @param args              请求参数
      *                          args中页数定义为 page / currentPage
      *
@@ -119,7 +175,7 @@ export default class ExcelExportUtil {
      * @param onPercentChange   导出百分比变化回调函数，返回 -1 表示导出失败
      * @param onFinish          完成回调函数
      */
-    exportByPageStart(
+    exportQueryByPageStart(
         args,
         reqFunc,
         transformFuncList,
