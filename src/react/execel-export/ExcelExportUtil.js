@@ -196,6 +196,7 @@ export default class ExcelExportUtil {
         let pageSize = 20;
         let results = [];
         let receivePage = 0;
+        let maxPageSize = 0;    // 网络查询中最大的页大小,用于异步返回后数据排序
 
         let onSuccess = res => {
             // console.log(res);
@@ -222,8 +223,13 @@ export default class ExcelExportUtil {
             }
 
             data.forEach((list, index) => {
+                if (maxPageSize < list.length) {
+                    maxPageSize = list.length;
+                }
                 list.forEach((item, index2) => {
-                    item.idForSort = res.currentPage * pageSize + index2;
+                    // item.idForSort = res.currentPage * pageSize + index2;
+                    item.nowPage = res.currentPage;
+                    item.index = index2;
                     // map去掉后台返回的重复数据
                     results[index].set(item.unionKey, item);
                 });
@@ -247,6 +253,7 @@ export default class ExcelExportUtil {
                     let list = [];
 
                     mp.forEach(v => {
+                        v.idForSort = v.nowPage * maxPageSize + v.index;
                         list.push(v);
                     });
 
