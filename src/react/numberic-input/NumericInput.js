@@ -2,24 +2,31 @@ import {Input} from 'antd';
 import React from "react";
 import StringUtils from "../utils/StringUtils";
 
+/**
+ * 数字输入器
+ */
 export default class NumericInput extends React.Component {
 
     onChange = (e) => {
         const {value} = e.target;
-        let reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
+        let reg = /^([1-9][0-9]*)$/;
 
-        if (!this.props.isDecimal) {
-            reg = /^([1-9][0-9]*)$/;
+        if (!StringUtils.isEmpty(this.props.isdecimal) && this.props.isdecimal) {
+            reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
         }
 
         if ((!Number.isNaN(value) && reg.test(value)) || value === '' || value === '-') {
             let result = value;
             let s = value.split('.');
-            let pre = s[0];
-            if (pre.length > 10) {
-                result = value.substr(0, 10);
+
+            if (!StringUtils.isEmpty(this.props.prelen)) {
+                let pre = s[0];
+                if (pre.length > this.props.prelen) {
+                    result = value.substr(0, this.props.prelen);
+                }
             }
-            if (StringUtils.isNotEmpty(s[1])) {
+
+            if (!StringUtils.isEmpty(s[1])) {
                 console.log(s[1]);
                 result = s[0] + '.' + s[1].substr(0, 2);
             }
@@ -31,7 +38,7 @@ export default class NumericInput extends React.Component {
     // '.' at the end or only '-' in the input box.
     onBlur = () => {
         const {value, onBlur} = this.props;
-        if (StringUtils.isNotEmpty(value) && value.length > 0 && (value[value.length - 1] === '.' || value === '-')) {
+        if (!StringUtils.isEmpty(value) && value.length > 0 && (value[value.length - 1] === '.' || value === '-')) {
             let s = value.substr(0, value.length - 1);
             console.log('s: ' + s);
             this.props.onChange(s);

@@ -1,10 +1,11 @@
 import {Select} from 'antd';
 import React from "react";
 import "./BirthdayRangePicker.css";
-import StringUtils from "../utils/StringUtils";
+import {StringUtils} from 'fontendcomponent';
 
 const Option = Select.Option;
 /**
+ * 城市选择器
  * @Param style: DIV 的样式 , the style of div
  * @Param cities: 城市信息JON , 格式如下 the json of city info
  * Sample :
@@ -33,32 +34,31 @@ export default class CitySelector extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props !== nextProps) {
-            let cities = new Map();
-            let citiesP = new Map();
-            let provinces = [];
-            let bIndex = [];
-            let eIndex = [];
-            for (let i = 0; i < nextProps.cities.length; ++i) {
-                let city = nextProps.cities[i];
-                if (i === 0 || (i > 0 && city.province !== nextProps.cities[i - 1].province)) {
-                    provinces.push(city.province);
-                    bIndex[provinces.length - 1] = i;
-                }
-                eIndex[provinces.length - 1] = i;
-                cities.set(city.id, city.display);
-                citiesP.set(city.id, city.province + city.display);
+    componentDidMount() {
+        let cities = new Map();
+        let citiesP = new Map();
+        let provinces = [];
+        let bIndex = [];
+        let eIndex = [];
+        console.log(this.props.cities);
+        for (let i = 0; i < this.props.cities.length; ++i) {
+            let city = this.props.cities[i];
+            if (i === 0 || (i > 0 && city.province !== this.props.cities[i - 1].province)) {
+                provinces.push(city.province);
+                bIndex[provinces.length - 1] = i;
             }
-            this.setState({
-                bIndex: bIndex,
-                eIndex: eIndex,
-                provinceList: provinces,
-                cities: cities,
-                citiesP: citiesP,
-                onChange: nextProps.onChange,
-            });
+            eIndex[provinces.length - 1] = i;
+            cities.set(city.id, city.display);
+            citiesP.set(city.id, city.province + city.display);
         }
+        this.setState({
+            bIndex: bIndex,
+            eIndex: eIndex,
+            provinceList: provinces,
+            cities: cities,
+            citiesP: citiesP,
+            onChange: this.props.onChange,
+        });
     }
 
     change0 = (value) => {
@@ -72,6 +72,7 @@ export default class CitySelector extends React.Component {
     };
 
     render() {
+
         let aCode = this.props.id;
         if (StringUtils.isEmpty(aCode)) {
             aCode = 0;
@@ -94,6 +95,7 @@ export default class CitySelector extends React.Component {
                 break;
             }
         }
+
         return (
             <div style={this.props.style}>
                 <Select onChange={this.change0} value={pIdx}>{ps}</Select>

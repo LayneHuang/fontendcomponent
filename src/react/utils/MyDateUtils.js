@@ -1,6 +1,10 @@
 import StringUtils from "./StringUtils";
 import moment from "moment";
 
+/**
+ * 日期工具类
+ * @Author: laynehuang
+ */
 export default class MyDateUtils {
 
     static getDateString(date) {

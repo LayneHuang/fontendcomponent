@@ -1,7 +1,8 @@
 import ExportJsonExcel from 'js-export-excel';
-import StringUtils from '../utils/StringUtils';
+import StringUtils from './StringUtils';
 
 /**
+ * 调用导出成Excel文件
  * @Author: laynehuang
  * @CreatedAt: 3/7/2019
  * @ModifiedAt 6/5/2019

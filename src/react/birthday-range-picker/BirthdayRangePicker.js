@@ -76,14 +76,14 @@ export default class BirthdayRangePicker extends React.Component {
     render() {
         return (
             <div className="container-div">
-                <Select style={{width: '50px'}}
+                <Select style={{minWidth: '55px'}}
                         disabled={this.disabled}
                         value={this.month}
                         onChange={this.onMonthChange}>
                     {BirthdayRangePicker.monthOption()}
                 </Select>月
 
-                <Select style={{width: '50px'}}
+                <Select style={{minWidth: '55px'}}
                         disabled={this.disabled}
                         value={this.date}
                         onChange={this.onDateChange}>

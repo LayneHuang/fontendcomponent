@@ -1,16 +1,10 @@
-import citiesInfo from "../../../city";
-
 let instance = null;
 
 export default class CacheService {
 
-    citiesMap;
-
     constructor() {
         if (!instance) {
             instance = this;
-            this.citiesMap = new Map();
-            this.citiesInit();
         }
         return instance;
     }
@@ -56,16 +50,6 @@ export default class CacheService {
         } else {
             // console.log('get store :' + window.localStorage.getItemByKey(key));
             return window.localStorage.clear();
-        }
-    }
-
-    // ------------------------- city init -----------------------------------------------
-
-    citiesInit() {
-        this.citiesMap = new Map();
-        for (let i = 0; i < citiesInfo.cities.length; ++i) {
-            let city = citiesInfo.cities[i];
-            this.citiesMap.set(city.id, city.province + city.display);
         }
     }
 
